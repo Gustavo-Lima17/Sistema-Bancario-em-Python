@@ -1,6 +1,45 @@
+from time import sleep
+
 saldo = 500
-saques_realizado = 0
-LIMITE_SAQUES = 3
+
+def menu():
+    while(True):
+        print("========== BANCO SANTANDER ==========")
+        print("Escolha umas das seguintes opções: ")
+        print("1 - Visualizar o extrato \n2 - Sacar dinheiro  \n3 - Depositar dinheiro \n4 - Sair\n5 - Criar Usuario")
+        
+        opcao = int(input("Digite sua opção: "))
+        
+        print("Caregando...")
+        sleep(2)
+
+        if opcao == 1: 
+            visualizar_conta()
+            linha()
+            sleep(5)
+        elif opcao == 2:  
+            saque()
+            linha()
+            sleep(5)
+        elif opcao == 3: 
+            deposito()
+            linha()
+            sleep(5)        
+        elif opcao ==4:
+            print("Saindo do sistema....")
+            sleep(5)
+            linha()
+            break
+        elif opcao ==5:
+            nome = input("Digite seu nome: ")
+            nascimento = input("Digite seu dia, mês e ano de nascimento: ")
+            cpf = input("CPF: ")
+            endereco = input("Logradouro, número, bairro - Cidade/Sigla: ")
+            criar_usuario(nome,nascimento,cpf,endereco)
+            linha()    
+        else:
+            print("Opcao invalida!")
+
 def linha():
     print("-"*40)
     
@@ -9,21 +48,16 @@ def visualizar_conta():
     print(f'Seu saldo atual: R${saldo}')
     
 def saque():
-    global saldo, saques_realizado
+    global saldo
     print("Quanto você deseja sacar? ")
     valor = float(input("Digite o valor: R$"))
     
-    if saques_realizado >= LIMITE_SAQUES:
-        print('Limite de saques atingido')
-        return
-    
-    if valor < saldo and valor > 500:
-        if valor >0:
+    if valor > 0:
+        if valor <= saldo:
             saldo -= valor
             print("Valor sacado com sucesso")
-            saques_realizado += 1
         else:
-            print("Impossivel realizado saque menor que zero")
+            print(f'Impossivel realizado maior que R${saldo}')
     else:
         print("Não é possivel realizar essa operação!")
 
@@ -37,4 +71,20 @@ def deposito():
         print("Valor depositado com sucesso")
     else:
         print("Valor invalido para depositar!")
-        
+
+usuarios = []
+
+def criar_usuario(nome, nascimento, cpf, endereco):
+    for usuario in usuarios:
+        if usuario["CPF"] == cpf:
+            print("Ja existe uma pessoa com esse cpf")
+            sleep(1.4)
+    usuario = {
+        "nome": nome,
+        "Nascimento": nascimento,
+        "CPF": cpf,
+        "Endereço": endereco
+    }
+    usuarios.append(usuario)
+    sleep(1)
+    print("Usuario adicionado com sucesso!")
